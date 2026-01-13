@@ -198,6 +198,7 @@ Por medio del presente adjunto los datos para la emisión de la póliza de segur
 
 *Fecha del Tour:* <?php echo date("d/m/Y", strtotime($booking['tour_date'])); ?>
 
+
 *LISTADO DE PASAJEROS*
 <?php foreach ($booking['passengers'] as $idx => $p): ?>
 <?php echo ($idx + 1) . ". " . $p['first_name'] . " " . $p['last_name'] . " – " . $p['doc_type'] . ": " . $p['doc_number']; ?>
