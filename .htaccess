@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+# Si el archivo o carpeta existe realmente, no hacer nada (para cargar imágenes, css, etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Regla mágica: convertir midominio.com/en en index.php?lang=en
+RewriteRule ^(en|pt)/?$ index.php?lang=$1 [L,QSA]
