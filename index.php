@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Formatear fecha para el mensaje
     $fecha_tour = date("d/m/Y", strtotime($_POST['tour_date']));
     
-    // Iniciar construcción del mensaje de WhatsApp (NUEVO FORMATO SOLICITADO)
+    // Iniciar construcción del mensaje de WhatsApp (FORMATO SOLICITADO)
     $mensaje_wa = "*DATOS PARA SEGURO MÉDICO*\n\n";
     $mensaje_wa .= "*Destino:* PNN Corales del Rosario y San Bernardo\n";
     $mensaje_wa .= "*Fecha del Tour:* " . $fecha_tour . "\n\n";
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Guardar en DB
             $stmt->execute([$booking_id, $nombre_limpio, $apellido_limpio, $tipos[$i], $numero_limpio]);
 
-            // Agregar al texto de WhatsApp (Con el separador '–' solicitado)
+            // Agregar al texto de WhatsApp
             $mensaje_wa .= ($i + 1) . ". " . $nombre_limpio . " " . $apellido_limpio . " – " . $tipos[$i] . ": " . $numero_limpio . "\n";
         }
     }
@@ -160,19 +160,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ${title}
                 
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Nombres</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Nombres</label>
                     <input type="text" name="first_name[]" placeholder="Nombres" required 
                         class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white capitalize">
                 </div>
 
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Apellidos</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Apellidos</label>
                     <input type="text" name="last_name[]" placeholder="Apellidos" required 
                         class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white capitalize">
                 </div>
 
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Tipo de Documento</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Tipo de Documento</label>
                     <select name="doc_type[]" class="w-full border-gray-300 rounded-md p-3 border bg-white focus:ring-brand focus:border-brand h-12">
                         <option value="Pasaporte">Pasaporte</option>
                         <option value="Cédula">Cédula</option>
@@ -183,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Número de identificación</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Número de identificación</label>
                     <input type="text" name="doc_number[]" placeholder="N° de Identificación" required 
                         class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white"
                         oninput="this.value = this.value.toUpperCase()">
@@ -199,6 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         list.insertAdjacentHTML('beforeend', getPassengerRow(index));
     }
 
+    // Inicializar con uno
     addPassenger();
 </script>
 
