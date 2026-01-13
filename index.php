@@ -22,11 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Formatear fecha para el mensaje
     $fecha_tour = date("d/m/Y", strtotime($_POST['tour_date']));
     
-    // Iniciar construcción del mensaje de WhatsApp (SOLO TEXTO)
-    $mensaje_wa = "*SOLICITUD DE SEGURO*\n";
-    $mensaje_wa .= "Poliza para Parque Corales del Rosario y San Bernardo\n\n";
-    $mensaje_wa .= "*Fecha Tour:* " . $fecha_tour . "\n\n";
-    $mensaje_wa .= "*Pasajeros:*\n";
+    // Iniciar construcción del mensaje de WhatsApp (NUEVO FORMATO SOLICITADO)
+    $mensaje_wa = "*DATOS PARA SEGURO MÉDICO*\n\n";
+    $mensaje_wa .= "*Destino:* PNN Corales del Rosario y San Bernardo\n";
+    $mensaje_wa .= "*Fecha del Tour:* " . $fecha_tour . "\n\n";
+    $mensaje_wa .= "*Listado:*\n";
 
     $sql = "INSERT INTO passengers (booking_id, first_name, last_name, doc_type, doc_number) VALUES (?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Guardar en DB
             $stmt->execute([$booking_id, $nombre_limpio, $apellido_limpio, $tipos[$i], $numero_limpio]);
 
-            // Agregar al texto de WhatsApp
-            $mensaje_wa .= ($i + 1) . ". " . $nombre_limpio . " " . $apellido_limpio . " - " . $tipos[$i] . ": " . $numero_limpio . "\n";
+            // Agregar al texto de WhatsApp (Con el separador '–' solicitado)
+            $mensaje_wa .= ($i + 1) . ". " . $nombre_limpio . " " . $apellido_limpio . " – " . $tipos[$i] . ": " . $numero_limpio . "\n";
         }
     }
 
