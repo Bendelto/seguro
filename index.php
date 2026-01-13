@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Formatear Nombres, Apellidos y Documento
             $nombre_limpio = ucwords(strtolower($nombres[$i]));
             $apellido_limpio = ucwords(strtolower($apellidos[$i]));
-            $numero_limpio = strtoupper($numeros[$i]); // Convierte el documento a mayúsculas (ej: pa123 -> PA123)
+            $numero_limpio = strtoupper($numeros[$i]); // Convierte el documento a mayúsculas para guardar
 
             // Guardar en DB
             $stmt->execute([$booking_id, $nombre_limpio, $apellido_limpio, $tipos[$i], $numero_limpio]);
@@ -179,8 +179,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div>
                     <label class="block text-xs text-gray-500 mb-1 md:hidden">Número de identificación</label>
-                    <input type="text" name="doc_number[]" placeholder="No. Identificación" required 
-                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white uppercase">
+                    <input type="text" name="doc_number[]" placeholder="N° de Identificación" required 
+                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white"
+                        oninput="this.value = this.value.toUpperCase()">
                 </div>
             </div>
         </div>`;
