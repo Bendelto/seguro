@@ -20,7 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     for ($i = 0; $i < count($nombres); $i++) {
         if (!empty($nombres[$i])) {
-            $stmt->execute([$booking_id, $nombres[$i], $apellidos[$i], $tipos[$i], $numeros[$i]]);
+            // MEJORA: Formatear Nombres y Apellidos (Capitalizar cada palabra)
+            // Primero todo a minúscula, luego mayúscula la primera letra de cada palabra
+            $nombre_limpio = ucwords(strtolower($nombres[$i]));
+            $apellido_limpio = ucwords(strtolower($apellidos[$i]));
+
+            $stmt->execute([$booking_id, $nombre_limpio, $apellido_limpio, $tipos[$i], $numeros[$i]]);
         }
     }
     $success = true;
@@ -117,15 +122,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ${title}
                 
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Nombres</label>
-                    <input type="text" name="first_name[]" placeholder="Nombres" required 
-                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white">
+                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Nombre</label>
+                    <input type="text" name="first_name[]" placeholder="Nombre" required 
+                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white capitalize">
                 </div>
 
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Apellidos</label>
-                    <input type="text" name="last_name[]" placeholder="Apellidos" required 
-                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white">
+                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Apellido</label>
+                    <input type="text" name="last_name[]" placeholder="Apellido" required 
+                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white capitalize">
                 </div>
 
                 <div>
