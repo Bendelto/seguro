@@ -20,8 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     for ($i = 0; $i < count($nombres); $i++) {
         if (!empty($nombres[$i])) {
-            // MEJORA: Formatear Nombres y Apellidos (Capitalizar cada palabra)
-            // Primero todo a minúscula, luego mayúscula la primera letra de cada palabra
+            // Formatear Nombres y Apellidos (Capitalizar cada palabra)
             $nombre_limpio = ucwords(strtolower($nombres[$i]));
             $apellido_limpio = ucwords(strtolower($apellidos[$i]));
 
@@ -146,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div>
                     <label class="block text-xs text-gray-500 mb-1 md:hidden">Número de identificación</label>
-                    <input type="tel" name="doc_number[]" placeholder="No. Identificación" required 
+                    <input type="text" name="doc_number[]" placeholder="No. Identificación" required 
                         class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white">
                 </div>
             </div>
