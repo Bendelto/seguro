@@ -1,9 +1,14 @@
+<IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteBase /
 
-# Si el archivo o carpeta existe realmente, no hacer nada (para cargar imágenes, css, etc.)
+# IMPORTANTE: Esto define que las reglas solo aplican desde esta carpeta.
+# Si tu carpeta se llama "seguro" o "formulario", cambia "/seguros/" por ese nombre.
+RewriteBase /seguros/
+
+# Si el archivo o carpeta existe realmente, no hacer nada (protege archivos reales)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Regla mágica: convertir midominio.com/en en index.php?lang=en
+# Regla corregida: Redirige /en o /pt al index.php DE ESTA CARPETA
 RewriteRule ^(en|pt)/?$ index.php?lang=$1 [L,QSA]
+</IfModule>
