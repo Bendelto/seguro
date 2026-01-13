@@ -1,5 +1,5 @@
 <?php
-// Cabecera estándar para caracteres latinos (tildes/ñ)
+// Cabecera estándar para caracteres latinos
 header('Content-Type: text/html; charset=utf-8');
 
 session_start();
@@ -193,11 +193,9 @@ if ($booking_rows) {
             </div>
 
             <textarea id="data-<?php echo $id; ?>" class="hidden">
-Hola, cordial saludo.
-Envío datos para la póliza:
+Hola, cordial saludo. Envío datos para la póliza de seguro para _Parque Corales del Rosario y San Bernardo_.
 
-*SOLICITUD DE SEGURO*
-Poliza para Parque Corales del Rosario y San Bernardo
+*DATOS DE LOS PASAJEROS*
 
 *Fecha Tour:* <?php echo date("d/m/Y", strtotime($booking['tour_date'])); ?>
 
@@ -252,7 +250,6 @@ Poliza para Parque Corales del Rosario y San Bernardo
     // Enviar directo a WhatsApp (Aseguradora)
     function sendToWhatsapp(id) {
         const text = document.getElementById('data-' + id).value;
-        // Se usa encodeURIComponent para que los saltos de linea y espacios funcionen bien
         const url = "https://wa.me/573137621051?text=" + encodeURIComponent(text);
         window.open(url, '_blank');
     }
