@@ -1,5 +1,5 @@
 <?php
-// LÍNEA CRÍTICA: Fuerza al navegador a usar UTF-8 (Arregla los rombos negros)
+// Cabecera estándar para caracteres latinos (tildes/ñ)
 header('Content-Type: text/html; charset=utf-8');
 
 session_start();
@@ -153,11 +153,6 @@ if ($booking_rows) {
             $first_p = $booking['passengers'][0] ?? ['first_name'=>'Sin', 'last_name'=>'Datos']; 
             $title = $first_p['first_name'] . ' ' . $first_p['last_name'];
             $count = count($booking['passengers']);
-            
-            // --- EMOJIS SEGUROS (Unicode Escape) ---
-            $icon_hand = "\u{1F44B}"; // 👋
-            $icon_date = "\u{1F4C5}"; // 📅
-            $icon_grp  = "\u{1F465}"; // 👥
         ?>
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden relative">
             
@@ -198,14 +193,15 @@ if ($booking_rows) {
             </div>
 
             <textarea id="data-<?php echo $id; ?>" class="hidden">
-Hola, cordial saludo. <?php echo $icon_hand; ?>
-
+Hola, cordial saludo.
 Envío datos para la póliza:
 
 *SOLICITUD DE SEGURO*
-<?php echo $icon_date; ?> *Fecha Tour:* <?php echo date("d/m/Y", strtotime($booking['tour_date'])); ?>
+Poliza para Parque Corales del Rosario y San Bernardo
 
-<?php echo $icon_grp; ?> *Pasajeros:*
+*Fecha Tour:* <?php echo date("d/m/Y", strtotime($booking['tour_date'])); ?>
+
+*Pasajeros:*
 <?php foreach ($booking['passengers'] as $idx => $p): ?>
 <?php echo ($idx + 1) . ". " . $p['first_name'] . " " . $p['last_name'] . " - " . $p['doc_type'] . ": " . $p['doc_number']; ?>
 
@@ -256,6 +252,7 @@ Envío datos para la póliza:
     // Enviar directo a WhatsApp (Aseguradora)
     function sendToWhatsapp(id) {
         const text = document.getElementById('data-' + id).value;
+        // Se usa encodeURIComponent para que los saltos de linea y espacios funcionen bien
         const url = "https://wa.me/573137621051?text=" + encodeURIComponent(text);
         window.open(url, '_blank');
     }

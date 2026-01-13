@@ -1,5 +1,5 @@
 <?php
-// LÍNEA CRÍTICA: Fuerza al navegador a usar UTF-8
+// Cabecera estándar
 header('Content-Type: text/html; charset=utf-8');
 
 require 'db.php';
@@ -22,14 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Formatear fecha para el mensaje
     $fecha_tour = date("d/m/Y", strtotime($_POST['tour_date']));
     
-    // --- EMOJIS SEGUROS (Unicode Escape) ---
-    $icon_date = "\u{1F4C5}"; // 📅
-    $icon_grp  = "\u{1F465}"; // 👥
-    
-    // Iniciar construcción del mensaje de WhatsApp
+    // Iniciar construcción del mensaje de WhatsApp (SOLO TEXTO)
     $mensaje_wa = "*SOLICITUD DE SEGURO*\n";
-    $mensaje_wa .= $icon_date . " *Fecha Tour:* " . $fecha_tour . "\n\n";
-    $mensaje_wa .= $icon_grp . " *Pasajeros:*\n";
+    $mensaje_wa .= "Poliza para Parque Corales del Rosario y San Bernardo\n\n";
+    $mensaje_wa .= "*Fecha Tour:* " . $fecha_tour . "\n\n";
+    $mensaje_wa .= "*Pasajeros:*\n";
 
     $sql = "INSERT INTO passengers (booking_id, first_name, last_name, doc_type, doc_number) VALUES (?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
