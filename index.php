@@ -29,20 +29,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     for ($i = 0; $i < count($nombres); $i++) {
         if (!empty($nombres[$i])) {
-            // Formatear Nombres y Apellidos
+            // Formatear Nombres, Apellidos y Documento
             $nombre_limpio = ucwords(strtolower($nombres[$i]));
             $apellido_limpio = ucwords(strtolower($apellidos[$i]));
+            $numero_limpio = strtoupper($numeros[$i]); // Convierte el documento a mayúsculas (ej: pa123 -> PA123)
 
             // Guardar en DB
-            $stmt->execute([$booking_id, $nombre_limpio, $apellido_limpio, $tipos[$i], $numeros[$i]]);
+            $stmt->execute([$booking_id, $nombre_limpio, $apellido_limpio, $tipos[$i], $numero_limpio]);
 
             // Agregar al texto de WhatsApp
-            $mensaje_wa .= ($i + 1) . ". " . $nombre_limpio . " " . $apellido_limpio . " - " . $tipos[$i] . ": " . $numeros[$i] . "\n";
+            $mensaje_wa .= ($i + 1) . ". " . $nombre_limpio . " " . $apellido_limpio . " - " . $tipos[$i] . ": " . $numero_limpio . "\n";
         }
     }
 
     // Generar enlace de WhatsApp (Codificado para URL)
-    // Tu número: 573205899997
     $whatsapp_link = "https://wa.me/573205899997?text=" . urlencode($mensaje_wa);
     
     $success = true;
@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div>
                     <label class="block text-xs text-gray-500 mb-1 md:hidden">Número de identificación</label>
                     <input type="text" name="doc_number[]" placeholder="No. Identificación" required 
-                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white">
+                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white uppercase">
                 </div>
             </div>
         </div>`;
