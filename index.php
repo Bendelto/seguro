@@ -1,4 +1,7 @@
 <?php
+// LÍNEA CRÍTICA: Fuerza al navegador a usar UTF-8
+header('Content-Type: text/html; charset=utf-8');
+
 require 'db.php';
 
 $success = false;
@@ -19,10 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Formatear fecha para el mensaje
     $fecha_tour = date("d/m/Y", strtotime($_POST['tour_date']));
     
+    // --- EMOJIS SEGUROS (Unicode Escape) ---
+    $icon_date = "\u{1F4C5}"; // 📅
+    $icon_grp  = "\u{1F465}"; // 👥
+    
     // Iniciar construcción del mensaje de WhatsApp
     $mensaje_wa = "*SOLICITUD DE SEGURO*\n";
-    $mensaje_wa .= "📅 *Fecha Tour:* " . $fecha_tour . "\n\n";
-    $mensaje_wa .= "👥 *Pasajeros:*\n";
+    $mensaje_wa .= $icon_date . " *Fecha Tour:* " . $fecha_tour . "\n\n";
+    $mensaje_wa .= $icon_grp . " *Pasajeros:*\n";
 
     $sql = "INSERT INTO passengers (booking_id, first_name, last_name, doc_type, doc_number) VALUES (?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
@@ -32,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Formatear Nombres, Apellidos y Documento
             $nombre_limpio = ucwords(strtolower($nombres[$i]));
             $apellido_limpio = ucwords(strtolower($apellidos[$i]));
-            $numero_limpio = strtoupper($numeros[$i]); // Convierte el documento a mayúsculas para guardar
+            $numero_limpio = strtoupper($numeros[$i]); 
 
             // Guardar en DB
             $stmt->execute([$booking_id, $nombre_limpio, $apellido_limpio, $tipos[$i], $numero_limpio]);
@@ -53,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Registro de Seguro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>

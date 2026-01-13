@@ -1,4 +1,7 @@
 <?php
+// LÍNEA CRÍTICA: Fuerza al navegador a usar UTF-8 (Arregla los rombos negros)
+header('Content-Type: text/html; charset=utf-8');
+
 session_start();
 require 'db.php';
 
@@ -109,6 +112,7 @@ if ($booking_rows) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Panel de Administración</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
