@@ -193,17 +193,18 @@ if ($booking_rows) {
             </div>
 
             <textarea id="data-<?php echo $id; ?>" class="hidden">
-Hola, cordial saludo. Envío datos para la póliza de seguro para _Parque Corales del Rosario y San Bernardo_.
+Hola, un cordial saludo.
+Por medio del presente adjunto los datos para la emisión de la póliza de seguro con destino al *_Parque Corales del Rosario y San Bernardo_*.
 
-*DATOS DE LOS PASAJEROS*
+*Fecha del Tour:* <?php echo date("d/m/Y", strtotime($booking['tour_date'])); ?>
 
-*Fecha Tour:* <?php echo date("d/m/Y", strtotime($booking['tour_date'])); ?>
-
-*Pasajeros:*
-<?php foreach ($booking['passengers'] as $idx => $p): ?>
-<?php echo ($idx + 1) . ". " . $p['first_name'] . " " . $p['last_name'] . " - " . $p['doc_type'] . ": " . $p['doc_number']; ?>
+*LISTADO DE PASAJEROS*
+<?php foreach ($booking['passengers'] as $p): ?>
+<?php echo $p['first_name'] . " " . $p['last_name'] . " – " . $p['doc_type'] . ": " . $p['doc_number']; ?>
 
 <?php endforeach; ?>
+
+Quedo atento a la confirmación. Gracias.
             </textarea>
 
             <div class="overflow-x-auto">
@@ -248,9 +249,10 @@ Hola, cordial saludo. Envío datos para la póliza de seguro para _Parque Corale
     }
 
     // Enviar directo a WhatsApp (Aseguradora)
+    // Número actualizado: +57 314 4264504
     function sendToWhatsapp(id) {
         const text = document.getElementById('data-' + id).value;
-        const url = "https://wa.me/573137621051?text=" + encodeURIComponent(text);
+        const url = "https://wa.me/573144264504?text=" + encodeURIComponent(text);
         window.open(url, '_blank');
     }
 </script>
