@@ -117,14 +117,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ${title}
                 
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Nombre</label>
-                    <input type="text" name="first_name[]" placeholder="Nombre" required 
+                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Nombres</label>
+                    <input type="text" name="first_name[]" placeholder="Nombres" required 
                         class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white">
                 </div>
 
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Apellido</label>
-                    <input type="text" name="last_name[]" placeholder="Apellido" required 
+                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Apellidos</label>
+                    <input type="text" name="last_name[]" placeholder="Apellidos" required 
                         class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white">
                 </div>
 
