@@ -38,14 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             theme: { 
                 extend: { 
                     colors: { brand: '#0f172a' },
-                    // Ajuste para evitar zoom en inputs en iPhone
                     screens: { 'xs': '475px' },
                 } 
             }
         }
     </script>
     <style>
-        /* Evita que iOS haga zoom al escribir si la fuente es menor a 16px */
+        /* Evita que iOS haga zoom al escribir */
         input, select { font-size: 16px !important; }
     </style>
 </head>
@@ -73,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                    class="w-full bg-white border-gray-300 text-gray-900 rounded-md shadow-sm focus:border-brand focus:ring focus:ring-brand focus:ring-opacity-20 p-2 border h-12">
         </div>
 
-        <div id="passengers-list" class="space-y-4">
+        <div id="passengers-list" class="space-y-6">
             </div>
 
         <div class="pt-2 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
@@ -100,39 +99,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
     function getPassengerRow(index) {
-        // Determinamos si mostramos el botón de eliminar (solo si no es el primero)
+        // Botón eliminar (solo si no es el primero)
         const deleteButton = index > 0 ? `
             <button type="button" onclick="this.closest('.passenger-row').remove()" 
                     class="absolute -top-3 -right-2 bg-red-100 text-red-600 rounded-full p-1.5 border border-red-200 shadow-sm z-10">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>` : '';
 
-        // Título del pasajero (Pasajero 1, Pasajero 2...)
-        const title = `<div class="text-xs font-bold text-gray-400 uppercase mb-2">Pasajero ${index + 1}</div>`;
+        // Título del pasajero
+        const title = `<div class="col-span-1 md:col-span-2 text-xs font-bold text-gray-400 uppercase mb-1">Pasajero ${index + 1}</div>`;
 
         return `
-        <div class="passenger-row relative bg-gray-50 p-3 md:p-5 rounded-lg border border-gray-200 animate-fade-in">
+        <div class="passenger-row relative bg-gray-50 p-4 rounded-lg border border-gray-200 animate-fade-in">
             ${deleteButton}
-            ${title}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${title}
                 
-                <div class="grid grid-cols-2 gap-3 md:col-span-2">
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Nombre</label>
                     <input type="text" name="first_name[]" placeholder="Nombre" required 
-                        class="col-span-1 w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-11">
-                    <input type="text" name="last_name[]" placeholder="Apellido" required 
-                        class="col-span-1 w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-11">
+                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white">
                 </div>
 
-                <div class="flex gap-2 md:col-span-2">
-                    <select name="doc_type[]" class="w-1/3 md:w-1/4 border-gray-300 rounded-md p-2 border bg-white focus:ring-brand focus:border-brand h-11 text-sm">
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Apellido</label>
+                    <input type="text" name="last_name[]" placeholder="Apellido" required 
+                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Tipo de Documento</label>
+                    <select name="doc_type[]" class="w-full border-gray-300 rounded-md p-3 border bg-white focus:ring-brand focus:border-brand h-12">
                         <option value="Pasaporte">Pasaporte</option>
                         <option value="Cédula">Cédula</option>
                         <option value="DNI">DNI</option>
                         <option value="ID">ID</option>
                         <option value="RG">RG</option>
                     </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 md:hidden">Número de identificación</label>
                     <input type="tel" name="doc_number[]" placeholder="No. Identificación" required 
-                        class="w-2/3 md:w-3/4 border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-11">
+                        class="w-full border-gray-300 rounded-md p-3 border focus:ring-brand focus:border-brand h-12 bg-white">
                 </div>
             </div>
         </div>`;
@@ -141,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     const list = document.getElementById('passengers-list');
 
     function addPassenger() {
-        const index = list.children.length; // Contar cuántos hay para ponerle número
+        const index = list.children.length; 
         list.insertAdjacentHTML('beforeend', getPassengerRow(index));
     }
 
