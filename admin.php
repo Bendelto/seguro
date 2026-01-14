@@ -194,8 +194,9 @@ if ($booking_rows) {
 
             <textarea id="data-<?php echo $id; ?>" class="hidden">
 Hola, un cordial saludo.
-Por medio del presente adjunto los datos para la emisión de la póliza de seguro con destino al *_Parque Corales del Rosario y San Bernardo_*.
+Por medio del presente adjunto los datos para la emisión de la póliza de seguro obligatoria.
 
+*Destino:* PNN Corales del Rosario y San Bernardo
 *Fecha del Tour:* <?php echo date("d/m/Y", strtotime($booking['tour_date'])); ?>
 
 
