@@ -5,11 +5,10 @@ require 'db.php';
 
 // --- CONFIGURACIÓN DE IDIOMAS ---
 
-// 1. Detectar idioma (por URL amigable o parámetro)
+// 1. Detectar idioma
 $lang = $_GET['lang'] ?? 'es';
 
-// 2. Definir la ruta base para los enlaces (dinámico)
-// Esto asegura que los botones ES | EN | PT funcionen bien con Nginx
+// 2. Ruta base dinámica
 $base_path = dirname($_SERVER['SCRIPT_NAME']);
 if(substr($base_path, -1) !== '/') $base_path .= '/';
 $base_url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'] . $base_path;
@@ -32,7 +31,13 @@ $t = [
         'wa_btn' => 'Enviar Datos por WhatsApp',
         'new_group' => 'Registrar otro grupo',
         'passenger_label' => 'Pasajero',
-        'secure_ssl' => 'Protegido por SSL. Datos confidenciales.'
+        'secure_ssl' => 'Protegido por SSL. Datos confidenciales.',
+        // Opciones del Select (Solo traducimos las genéricas)
+        'opts' => [
+            'pp' => 'Pasaporte',
+            'dni' => 'Cédula / DNI / ID',
+            'other' => 'Otro'
+        ]
     ],
     'en' => [
         'title' => 'Passenger Registration',
@@ -50,7 +55,12 @@ $t = [
         'wa_btn' => 'Send Data via WhatsApp',
         'new_group' => 'Register another group',
         'passenger_label' => 'Passenger',
-        'secure_ssl' => 'SSL Protected. Confidential Data.'
+        'secure_ssl' => 'SSL Protected. Confidential Data.',
+        'opts' => [
+            'pp' => 'Passport',
+            'dni' => 'National ID / DNI',
+            'other' => 'Other'
+        ]
     ],
     'pt' => [
         'title' => 'Cadastro de Passageiros',
@@ -68,11 +78,16 @@ $t = [
         'wa_btn' => 'Enviar Dados pelo WhatsApp',
         'new_group' => 'Cadastrar outro grupo',
         'passenger_label' => 'Passageiro',
-        'secure_ssl' => 'Protegido por SSL. Dados confidenciais.'
+        'secure_ssl' => 'Protegido por SSL. Dados confidenciais.',
+        'opts' => [
+            'pp' => 'Passaporte',
+            'dni' => 'Identidade / DNI',
+            'other' => 'Outro'
+        ]
     ]
 ];
 
-// Si el idioma no existe, forzar español
+// Validación de idioma
 if (!array_key_exists($lang, $t)) $lang = 'es';
 $tr = $t[$lang]; 
 
@@ -81,12 +96,10 @@ $success = false;
 $whatsapp_link = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 1. Insertar la reserva general
     $stmt = $pdo->prepare("INSERT INTO bookings (tour_date) VALUES (?)");
     $stmt->execute([$_POST['tour_date']]);
     $booking_id = $pdo->lastInsertId();
 
-    // 2. Insertar los pasajeros
     $nombres = $_POST['first_name'];
     $apellidos = $_POST['last_name'];
     $tipos = $_POST['doc_type'];
@@ -94,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $fecha_tour = date("d/m/Y", strtotime($_POST['tour_date']));
     
-    // --- CONSTRUCCIÓN DEL MENSAJE DE WHATSAPP ---
+    // Mensaje WhatsApp (Formato solicitado)
     $mensaje_wa = "*DATOS PARA SEGURO MÉDICO*\n\n";
     $mensaje_wa .= "*Destino:* PNN Corales del Rosario y San Bernardo\n";
     $mensaje_wa .= "*Fecha del Tour:* " . $fecha_tour . "\n\n";
@@ -108,10 +121,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre_limpio = ucwords(strtolower($nombres[$i]));
             $apellido_limpio = ucwords(strtolower($apellidos[$i]));
             $numero_limpio = strtoupper($numeros[$i]); 
+            // Guardamos el tipo tal cual viene (en español por el value fijo)
+            $tipo_limpio = $tipos[$i]; 
 
-            $stmt->execute([$booking_id, $nombre_limpio, $apellido_limpio, $tipos[$i], $numero_limpio]);
+            $stmt->execute([$booking_id, $nombre_limpio, $apellido_limpio, $tipo_limpio, $numero_limpio]);
 
-            // Formato de lista ACTUALIZADO: 1. Nombre Apellido – NUMERO (Sin tipo de documento)
+            // Formato WhatsApp: 1. Nombre Apellido – NUMERO
             $mensaje_wa .= ($i + 1) . ". " . $nombre_limpio . " " . $apellido_limpio . " – " . $numero_limpio . "\n";
         }
     }
@@ -215,13 +230,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <script>
+    // Pasar traducciones a JS
     const labels = {
         names: "<?php echo $tr['names']; ?>",
         surnames: "<?php echo $tr['surnames']; ?>",
         doc_type: "<?php echo $tr['doc_type']; ?>",
         doc_id: "<?php echo $tr['doc_id']; ?>",
         placeholder_id: "<?php echo $tr['doc_placeholder']; ?>",
-        passenger: "<?php echo $tr['passenger_label']; ?>"
+        passenger: "<?php echo $tr['passenger_label']; ?>",
+        // Opciones traducibles
+        opts: {
+            pp: "<?php echo $tr['opts']['pp']; ?>",
+            dni: "<?php echo $tr['opts']['dni']; ?>",
+            other: "<?php echo $tr['opts']['other']; ?>"
+        }
     };
 
     function getPassengerRow(index) {
@@ -233,7 +255,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         const title = `<div class="col-span-1 md:col-span-2 text-xs font-bold text-gray-400 uppercase mb-1">${labels.passenger} ${index + 1}</div>`;
 
-        // LISTA DE DOCUMENTOS ACTUALIZADA
         return `
         <div class="passenger-row relative bg-gray-50 p-4 rounded-lg border border-gray-200 animate-fade-in">
             ${deleteButton}
@@ -260,10 +281,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
                         <option value="Registro Civil">Registro Civil</option>
                         <option value="Cédula de Extranjería">Cédula de Extranjería</option>
-                        <option value="Pasaporte">Pasaporte</option>
+                        <option value="Pasaporte">${labels.opts.pp}</option>
                         <option value="RG">RG</option>
-                        <option value="Cédula / DNI / ID">Cédula / DNI / ID</option>
-                        <option value="Otro">Otro</option>
+                        <option value="Cédula / DNI / ID">${labels.opts.dni}</option>
+                        <option value="Otro">${labels.opts.other}</option>
                     </select>
                 </div>
 
