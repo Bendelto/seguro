@@ -201,7 +201,7 @@ Por medio del presente adjunto los datos para la emisión de la póliza de segur
 
 *LISTADO DE PASAJEROS*
 <?php foreach ($booking['passengers'] as $idx => $p): ?>
-<?php echo ($idx + 1) . ". " . $p['first_name'] . " " . $p['last_name'] . " – " . $p['doc_type'] . ": " . $p['doc_number']; ?>
+<?php echo ($idx + 1) . ". " . $p['first_name'] . " " . $p['last_name'] . " – " . $p['doc_number']; ?>
 
 <?php endforeach; ?>
 
