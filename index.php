@@ -277,13 +277,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">${labels.doc_type}</label>
                     <select name="doc_type[]" class="w-full border-gray-300 rounded-md p-3 border bg-white focus:ring-brand focus:border-brand h-12">
+                        <option value="Pasaporte">${labels.opts.pp}</option>
+                        <option value="Cédula / DNI / ID">${labels.opts.dni}</option>
                         <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                        <option value="Cédula de Extranjería">Cédula de Extranjería</option>
                         <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
                         <option value="Registro Civil">Registro Civil</option>
-                        <option value="Cédula de Extranjería">Cédula de Extranjería</option>
-                        <option value="Pasaporte">${labels.opts.pp}</option>
                         <option value="RG">RG</option>
-                        <option value="Cédula / DNI / ID">${labels.opts.dni}</option>
                         <option value="Otro">${labels.opts.other}</option>
                     </select>
                 </div>

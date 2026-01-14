@@ -3,7 +3,7 @@ RewriteEngine On
 
 # IMPORTANTE: Esto define que las reglas solo aplican desde esta carpeta.
 # Si tu carpeta se llama "seguro" o "formulario", cambia "/seguros/" por ese nombre.
-RewriteBase /seguros/
+RewriteBase /seguro/
 
 # Si el archivo o carpeta existe realmente, no hacer nada (protege archivos reales)
 RewriteCond %{REQUEST_FILENAME} !-f
